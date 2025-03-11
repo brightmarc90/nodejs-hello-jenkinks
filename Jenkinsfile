@@ -1,11 +1,15 @@
 pipeline {
     agent any
-
-    environment {
-        NODE_VERSION = "20.11.0"
-    }
-
+    
     stages {
+        stage('Setup Node.js') {
+            steps {
+                script {
+                    def nodeHome = tool name: "nodejs-20", type: "jenkins.plugins.nodejs.tools.NodeJSInstallation"
+                    env.PATH = "${nodeHome}/bin:${env.PATH}"
+                }
+            }
+        }
         stage('Install dependencies') {
             steps {
                 echo 'Installation des dépendances...'
